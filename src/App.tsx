@@ -21,7 +21,6 @@ const darkTheme = createTheme({
 });
 
 function App() {
-  console.log("variable::: ", import.meta.env);
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseLine />
