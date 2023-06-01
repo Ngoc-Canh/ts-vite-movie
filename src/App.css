@@ -1,0 +1,11 @@
+body {
+    margin: 0
+}
+
+.header-bg-transparent {
+    background-color: transparent !important;
+}
+
+.header-bg-red {
+    background-color: #22201f !important;
+}
