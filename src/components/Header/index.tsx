@@ -1,10 +1,11 @@
-import { memo, useEffect, useState } from "react";
-import Grid from "@mui/material/Grid";
 import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import { useEffect, useState } from "react";
+import LoadingGlobal from "../common/LoadingGlobal";
 
 function Header() {
   const [colorAppbar, setColorAppbar] = useState(true);
@@ -35,7 +36,7 @@ function Header() {
         position="fixed"
         style={{
           boxShadow: "none",
-          zIndex: "1000",
+          zIndex: "999",
           top: "0px",
           left: "auto",
           transition: "all 0.5s ease",

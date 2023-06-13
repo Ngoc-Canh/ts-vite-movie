@@ -1,10 +1,7 @@
-import Header from "./components/Header";
-import Routers from "./config/Routers";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import CssBaseLine from "@mui/material/CssBaseline";
-import "./App.css";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import "./App.css";
+import Routers from "./config/Routers";
 
 const darkTheme = createTheme({
   palette: {
@@ -24,10 +21,10 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseLine />
-      <Header />
-      <Box component="main">
-        <Routers />
-      </Box>
+      {/* <Header /> */}
+      {/* <Box component="main"> */}
+      <Routers />
+      {/* </Box> */}
     </ThemeProvider>
   );
 }

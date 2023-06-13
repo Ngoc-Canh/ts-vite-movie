@@ -8,24 +8,30 @@ import { ModelPerson } from "../../models/Person";
 import ConfigUI from "../../utils/config-ui";
 import Container from "../common/Container";
 import ItemBox from "./components/ItemBox";
+import { useAppDispatch } from "../../app/hook";
+import { setOpenModel } from "../../app/features/globalLoadingSlicer";
 
 const DetailPersonPage = () => {
   const { id } = useParams();
   const [detail, setDetail] = useState<ModelPerson>();
   const [medias, setMedias] = useState<Cast[]>([]);
   const [page, setPage] = useState(1);
+  const useDispatch = useAppDispatch();
 
   useEffect(() => {
     const getDetail = async () => {
+      useDispatch(setOpenModel(true));
       const { response, err } = await MediaPersonApi.getList({ id: id });
 
       if (response) {
         setDetail(response.data);
       }
       if (err) throw err;
+      useDispatch(setOpenModel(false));
     };
 
     const getMedias = async () => {
+      useDispatch(setOpenModel(true));
       const { response, err } = await MediaPersonApi.compileCredits({ id: id });
 
       if (response) {
@@ -40,6 +46,7 @@ const DetailPersonPage = () => {
         setMedias(sorted);
       }
       if (err) throw err;
+      useDispatch(setOpenModel(false));
     };
 
     getDetail();
@@ -54,7 +61,7 @@ const DetailPersonPage = () => {
     <Box
       sx={{
         margin: "auto",
-        padding: "64px 16px 16px 16px",
+        padding: "80px 16px 16px 16px",
       }}
     >
       <Box sx={{ display: "flex", flexDirection: "row" }}>

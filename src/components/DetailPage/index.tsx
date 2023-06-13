@@ -13,23 +13,25 @@ import CircularRating from "../common/CircularRating";
 
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteBorder";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import { Cast } from "../../models/Credits";
-import Container from "../common/Container";
-import CastSlide from "./components/CastSlide";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import mediaApi from "../../api/media.api";
-import { MediaDetail } from "../../models/ModelMediaDetail";
-import tmdbConfig from "../../config/tmdbConfigs";
 import MediaCreditsApi from "../../api/media.credits.api";
 import MediaVideosApi from "../../api/media.videos.api";
-import { Result } from "../../models/ModelVideo";
-import PosterSlide from "./components/PosterSlide";
+import tmdbConfig from "../../config/tmdbConfigs";
+import { Cast } from "../../models/Credits";
 import { Backdrop, Poster } from "../../models/ImagesMedia";
-import BackdropSlide from "./components/BackdropSlide";
+import { MediaDetail } from "../../models/ModelMediaDetail";
+import { Result } from "../../models/ModelVideo";
 import { ListResult } from "../../models/Recommendation";
+import Container from "../common/Container";
+import BackdropSlide from "./components/BackdropSlide";
+import CastSlide from "./components/CastSlide";
+import HeaderPage from "./components/HeaderPage";
+import PosterSlide from "./components/PosterSlide";
 import RecommendationSlide from "./components/RecommendationSlide";
 import VideoSlide from "./components/VideoSlide";
-import HeaderPage from "./components/HeaderPage";
+import { useAppDispatch } from "../../app/hook";
+import { setOpenModel } from "../../app/features/globalLoadingSlicer";
 
 const DetailPage = () => {
   const { id, type } = useParams();
@@ -39,9 +41,11 @@ const DetailPage = () => {
   const [recommendation, setRecommendation] = useState<ListResult[]>([]);
   const [backDrops, setBackDrops] = useState<Backdrop[]>([]);
   const [infoVideo, setInfoVideo] = useState<Result[]>([]);
+  const useDispatch = useAppDispatch();
 
   useEffect(() => {
     const getDetail = async () => {
+      useDispatch(setOpenModel(true));
       const { response, err } = await mediaApi.getDetail({
         id: id,
         type: type,
@@ -49,6 +53,7 @@ const DetailPage = () => {
 
       if (response) setDetail(response.data);
       if (err) throw err;
+      useDispatch(setOpenModel(false));
     };
 
     const getCredits = async () => {
@@ -59,9 +64,11 @@ const DetailPage = () => {
 
       if (response) setCasters(response.data.cast);
       if (err) throw err;
+      useDispatch(setOpenModel(false));
     };
 
     const getVideos = async () => {
+      useDispatch(setOpenModel(true));
       const { response, error } = await MediaVideosApi.getVideos({
         movie_id: id,
         media_type: type,
@@ -72,6 +79,7 @@ const DetailPage = () => {
     };
 
     const getImages = async () => {
+      useDispatch(setOpenModel(true));
       const { response, error } = await MediaVideosApi.getImages({
         movie_id: id,
         media_type: type,
@@ -82,9 +90,11 @@ const DetailPage = () => {
         setBackDrops(response?.data.backdrops);
       }
       if (error) throw error;
+      useDispatch(setOpenModel(false));
     };
 
     const getRecommendations = async () => {
+      useDispatch(setOpenModel(true));
       const { response, error } = await MediaVideosApi.getRecommendationMedial({
         movie_id: id,
         media_type: type,
@@ -94,6 +104,7 @@ const DetailPage = () => {
         setRecommendation(response?.data.results);
       }
       if (error) throw error;
+      useDispatch(setOpenModel(false));
     };
 
     getCredits();

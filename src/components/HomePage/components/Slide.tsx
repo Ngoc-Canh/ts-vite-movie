@@ -14,6 +14,8 @@ import ConfigUI from "../../../utils/config-ui";
 import ButtonCustom from "../../common/Button";
 import CircularRating from "../../common/CircularRating";
 import _ from "lodash";
+import { useAppDispatch } from "../../../app/hook";
+import { setOpenModel } from "../../../app/features/globalLoadingSlicer";
 
 interface Props {
   mediaType: String;
@@ -23,9 +25,11 @@ interface Props {
 const Slide = (props: Props) => {
   const [movie, setMovies] = useState<MedialResult[]>([]);
   const [genres, setGenres] = useState<Genre[]>([]);
+  const useDispatch = useAppDispatch();
 
   useEffect(() => {
     const getMedia = async () => {
+      useDispatch(setOpenModel(true));
       const { response, error } = await MediaTrendingApi.getTrending({
         media_type: props.mediaType,
         time_window: props.timeWindow,
@@ -33,9 +37,12 @@ const Slide = (props: Props) => {
 
       if (response) setMovies(response.data.results);
       if (error) throw error;
+
+      useDispatch(setOpenModel(false));
     };
 
     const getGenres = async () => {
+      useDispatch(setOpenModel(true));
       const { response, err } = await MediaGenresApi.getList({
         type: props.mediaType,
       });
@@ -45,6 +52,8 @@ const Slide = (props: Props) => {
         getMedia();
       }
       if (err) throw err;
+
+      useDispatch(setOpenModel(false));
     };
 
     getGenres();
@@ -54,7 +63,7 @@ const Slide = (props: Props) => {
     <Swiper style={{ width: "100%", height: "max-content" }} loop={true}>
       {movie.map((media, key) => {
         return (
-          <SwiperSlide>
+          <SwiperSlide key={media.id}>
             <Box
               sx={{
                 paddingTop: {
@@ -139,7 +148,10 @@ const Slide = (props: Props) => {
                 {media.overview}
               </Typography>
 
-              <Link to={`/${media.id}/${props.mediaType}`} style={{ textDecoration: "none" }}>
+              <Link
+                to={`/${media.id}/${props.mediaType}`}
+                style={{ textDecoration: "none" }}
+              >
                 <Button
                   variant="contained"
                   color="error"
