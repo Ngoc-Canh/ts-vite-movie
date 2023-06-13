@@ -24,6 +24,7 @@ function RecommendationSlide(props: Props) {
                 vote_average: item.vote_average,
                 vote_count: item.vote_count,
                 poster_path: item.poster_path,
+                id: item.id,
               }}
               type={{ media_type: props.type }}
             />
